@@ -1,4 +1,5 @@
 import { AppProps } from "next/app"
+import Image from "next/future/image"
 import { globalStyles } from "../styles/global"
 
 import logoImg from "../assets/logo.svg"
@@ -10,7 +11,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Container>
       <Header>
-        <img src= {logoImg.src} alt="" />
+        <Image src= {logoImg.src} alt="" />
       </Header>
       <Component {...pageProps} />
     </Container> 
