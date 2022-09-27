@@ -3,30 +3,43 @@ import Image from "next/future/image"
 import Head from "next/head"
 import Link from "next/link"
 import Stripe from "stripe"
+import { MouseEvent } from "react"
 import { Handbag } from "phosphor-react";
 import { useKeenSlider } from 'keen-slider/react'
 
-import { HomeContainer, Product } from "../styles/pages/home"
+import { useBag } from "../contexts/BagContext"
+import { numberFormatter } from "../utils/formatters"
 import { stripe } from "../lib/stripe"
+
+import { HomeContainer, Product } from "../styles/pages/home"
 
 import 'keen-slider/keen-slider.min.css'
 
+type ProductData = {
+  id: string
+  name: string
+  price: number
+  imageUrl: string
+}
+
 interface HomeProps {
-  products: {
-    id: string
-    name: string
-    price: string
-    imageUrl: string
-  }[]
+  products: ProductData[]
 }
 
 export default function Home({ products }: HomeProps) {
+  const { addItemToBag } = useBag()
+
   const [sliderRef] = useKeenSlider({
     slides: {
       perView: 3,
       spacing: 48
     }
   })
+
+  function handleAddToBag(e: MouseEvent<HTMLButtonElement>, product: ProductData) {
+    e.preventDefault()
+    addItemToBag(product)
+  }
 
   return (
     <>
@@ -35,15 +48,15 @@ export default function Home({ products }: HomeProps) {
       </Head>
       <HomeContainer ref={sliderRef} className="keen-slider">
         {products.map(product => (
-          <Link key={product.id} href={`/product/${product.id}`} prefetch={false}>
-            <Product className="keen-slider__slide" >
+          <Link key={product.id} href={`/product/${product.id}`} prefetch={false} passHref>
+            <Product className="keen-slider__slide">
               <Image src={product.imageUrl} width={520} height={480} alt="" />
               <footer>
                 <div>
                   <strong>{product.name}</strong>
-                  <span>{product.price}</span>
+                  <span>{numberFormatter(product.price)}</span>
                 </div>
-                <button>
+                <button onClick={(e) => handleAddToBag(e, product)}>
                   <Handbag size={32} color="#FFF" />
                 </button>
               </footer>
@@ -68,10 +81,7 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-      }).format(price.unit_amount / 100)
+      price: price.unit_amount / 100
     }
   })
 

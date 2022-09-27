@@ -1,4 +1,6 @@
 import { AppProps } from "next/app"
+
+import { Bag } from "../components/Bag"
 import { Header } from "../components/Header"
 
 import { BagProvider } from "../contexts/BagContext"
@@ -13,6 +15,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <BagProvider>
       <Container>
         <Header />
+        <Bag />
         <Component {...pageProps} />
       </Container>
     </BagProvider>
