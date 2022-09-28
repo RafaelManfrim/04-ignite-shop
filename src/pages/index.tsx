@@ -20,6 +20,7 @@ type ProductData = {
   name: string
   price: number
   imageUrl: string
+  defaultPriceId: string
 }
 
 interface HomeProps {
@@ -81,7 +82,8 @@ export const getStaticProps: GetStaticProps = async () => {
       id: product.id,
       name: product.name,
       imageUrl: product.images[0],
-      price: price.unit_amount / 100
+      price: price.unit_amount / 100,
+      defaultPriceId: price.id
     }
   })
 

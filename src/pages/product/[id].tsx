@@ -22,8 +22,6 @@ interface ProductProps {
 export default function Product({ product }: ProductProps) {
   const { addItemToBag } = useBag()
 
-  console.log(product)
-
   function handleAddProductToBag() {
     addItemToBag(product)
   }

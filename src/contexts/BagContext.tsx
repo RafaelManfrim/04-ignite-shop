@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import {
   createContext,
@@ -7,14 +8,15 @@ import {
   useState,
 } from 'react'
 
-type Item = {
+export type Item = {
   id: string
   name: string
   price: number
   imageUrl: string
+  defaultPriceId: string
 }
 
-type BagItem = Item & {
+export type BagItem = Item & {
   quantity: number
 }
 
@@ -67,20 +69,19 @@ export function BagProvider({ children }: BagProviderProps) {
   }
 
   async function finalizeOrder() {
-    // STRIPE LOGIC
-    // try {
-    //   setIsCreatingCheckoutSession(true)
-    //   const response = await axios.post('/api/checkout', {
-    //     priceId: product.defaultPriceId
-    //   })
+    try {
+      setIsCreatingCheckoutSession(true)
+      const response = await axios.post('/api/checkout', {
+        products: bagItems
+      })
 
-    //   const { checkoutUrl } = response.data
+      const { checkoutUrl } = response.data
 
-    //   window.location.href = checkoutUrl
-    // } catch (err) {
-    //   alert("Falha ao redirecionar ao checkout!")
-    //   setIsCreatingCheckoutSession(false)
-    // }
+      window.location.href = checkoutUrl
+    } catch (err) {
+      alert("Falha ao redirecionar ao checkout!")
+      setIsCreatingCheckoutSession(false)
+    }
 
     setBagItems([])
   }

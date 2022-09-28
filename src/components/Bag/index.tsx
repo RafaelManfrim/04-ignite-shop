@@ -20,7 +20,7 @@ import {
 import 'react-modern-drawer/dist/index.css'
 
 export function Bag() {
-  const { isOpen, toggleBag, closeBag, bagItems, removeItemFromBag, finalizeOrder } = useBag()
+  const { isOpen, toggleBag, closeBag, bagItems, removeItemFromBag, finalizeOrder, isCreatingCheckoutSession } = useBag()
 
   const totalInBagPrice = bagItems.reduce((acc, item) => {
     return acc + item.price * item.quantity
@@ -56,7 +56,10 @@ export function Bag() {
           </PriceInformation>
         </BagInformationContainer>
 
-        <CheckoutButton disabled={bagItems.length === 0} onClick={finalizeOrder}>
+        <CheckoutButton
+          disabled={bagItems.length === 0 || isCreatingCheckoutSession}
+          onClick={finalizeOrder}
+        >
           Finalizar compra
         </CheckoutButton>
       </DrawerContainer>

@@ -13,6 +13,11 @@ export const SuccessContainer = styled("main", {
     color: "$gray100",
   },
 
+  section: {
+    display: "flex",
+    gap: '1rem',
+  },
+
   p: {
     fontSize: "$xl",
     color: "$gray300",
@@ -44,7 +49,7 @@ export const ImageContainer = styled("div", {
   marginTop: '4rem',
   borderRadius: 8,
   background: 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
-  padding:  '0.25rem',
+  padding: '0.25rem',
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
